@@ -71,16 +71,13 @@ demandeDonneesApi("categories").then(reponses => {
             galleryImage.removeChild(galleryImage.firstChild)
             }
             if(idBtn === 0){
-                console.log("j'affiche tous", nomBtn );
                 genererTousLesProjets()
             }else {
-                console.log("j'affiche la catégorie ", nomBtn);
                 demandeDonneesApi("works").then(projets => {
-                 const projetsFiltrees = projets.filter(projet=> projet.categoryId === idBtn)
-                 projetsFiltrees.forEach((projet) => {
+                 const projetsFiltres = projets.filter(projet=> projet.categoryId === idBtn)
+                 projetsFiltres.forEach((projet) => {
                     creerLesProjetsEnHtml(projet)
                  })
-                 console.log("hello dear"+projetsFiltrees);
                 })
             }
         })
