@@ -66,6 +66,10 @@ demandeDonneesApi("categories").then(reponses => {
         bouton.id = idBtn
         //Pour chaque bouton je lui mets un écouteurs d'évenement
         bouton.addEventListener("click", () => {
+            const galleryImage = document.querySelector(".gallery")
+            while (galleryImage.firstChild) {
+            galleryImage.removeChild(galleryImage.firstChild)
+            }
             if(idBtn === 0){
                 console.log("j'affiche tous", nomBtn );
                 genererTousLesProjets()
