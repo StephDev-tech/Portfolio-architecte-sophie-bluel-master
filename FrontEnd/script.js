@@ -1,31 +1,28 @@
+let allWorks = []
+
 //Je fais une requête Globale pour récupérer les projets
-async function demandeDonneesApi (dataType) {
-    const response = await fetch(`http://localhost:5678/api/${dataType}`);
+const demandeDonneesApi = async (dataType,typeDeDemande,corpdDeLaDemande) => {
+    const response = await fetch(`http://localhost:5678/api/${dataType}`,{
+        method: typeDeDemande,
+        body: corpdDeLaDemande
+    });
     const rep = await response.json()
     return rep
 }
 
-function creerLesProjetsEnHtml (projet) {
+const creerLesProjetsEnHtml = (projet) => {
     //Je crée les éléments de la structure 
     let figure = document.createElement("figure")
-    let imageElement = document.createElement("img")
-    let figcaption = document.createElement("figcaption")
-    //Je récupère les données de la requête 
-    let srcImage = projet.imageUrl
-    let titleImage = projet.title
-    //J'intègre les données dans le html
-    imageElement.src = srcImage;
-    figcaption.textContent = titleImage
+    figure.innerHTML = `<img src="${projet.imageUrl}" alt="${projet.title}"><figcaption>${projet.title}</figcaption>`
     const galleryImage = document.querySelector(".gallery")
-    galleryImage.appendChild(figure)
-    figure.appendChild(imageElement)
-    figure.appendChild(figcaption)
+    galleryImage.append(figure)
 }
 
 /*************************************Projets********************/
-function genererTousLesProjets () {
+const genererTousLesProjets = () => {
     //J'intègre dynamiquement les projets
     demandeDonneesApi("works").then(projets => {
+        allWorks = projets
         projets.forEach((projet) => {
             creerLesProjetsEnHtml(projet)
         })
@@ -50,43 +47,34 @@ demandeDonneesApi("categories").then(reponses => {
         //J'ajoute dans mon set les catégories de l'API
         setCategories.add(reponse)
     })
+    console.log(setCategories);
     //Je boucle sur l'ensemble des catégories de mon set pour créer des boutons 
     setCategories.forEach((categorie) => {
         //je crée les éléments de la structure
         let li = document.createElement("li")
-        let bouton = document.createElement("button")
-        //Je récupère les données de mon set 
-        let nomBtn = categorie.name
-        let idBtn = categorie.id
-        //j'intègre dans les données dans le html 
+        li.innerHTML = `<button id=${categorie.id}>${categorie.name}</button>`
+        //je l'intègre au document HTML
         const listeFiltre = document.querySelector(".listeFiltre") 
-        listeFiltre.appendChild(li)
-        li.appendChild(bouton)
-        bouton.innerText=nomBtn
-        bouton.id = idBtn
+        listeFiltre.append(li)
         //Pour chaque bouton je lui mets un écouteurs d'évenement
-        bouton.addEventListener("click", () => {
-            if(idBtn === 0){
-                console.log("j'affiche tous", nomBtn );
-                genererTousLesProjets()
-            }else {
-                console.log("j'affiche la catégorie ", nomBtn);
-                demandeDonneesApi("works").then(projets => {
-                 const projetsFiltrees = projets.filter(projet=> projet.categoryId === idBtn)
-                 projetsFiltrees.forEach((projet) => {
+        li.addEventListener("click", () => {
+            const galleryImage = document.querySelector(".gallery")
+            galleryImage.innerHTML = ""
+            if(categorie.id === 0){
+                allWorks.forEach((projet) => {
                     creerLesProjetsEnHtml(projet)
                  })
-                 console.log("hello dear"+projetsFiltrees);
-                })
+            }else {
+                 const projetsFiltres = allWorks.filter(projet=> projet.categoryId === categorie.id)
+                 projetsFiltres.forEach((projet) => {
+                    creerLesProjetsEnHtml(projet)
+                 })
             }
         })
     }) 
 })
 
-/*figcaption.dataset.title = resultatProjet[i].title
-figcaption.addEventListener("click", (e) => {
-    console.log("coucou", e.target)
-})*/
+
 
 
 
