@@ -16,7 +16,7 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
+			<li><a href="index.html">projets</a></li>
 			<li>contact</li>
 			<li><a href="login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
@@ -24,18 +24,19 @@
 	</nav>
 </header>
 <main class="main-log-in">
-    <section class="section-log-in">
-        <h2>Log in</h2>
+	<h2 class="titre-log-in">Log in</h2>
+    <form class="form-log-in" action="http://localhost:5678/api/users/login" method="post" id="monForm">
         <div class="div-input">
             <label class="titre-input" for="email">E-mail</label>
-            <input type="text" id="email" name="email">
+            <input class="input" type="text" id="email" name="email">
         </div>
         <div class="div-input">
             <label class="titre-input" for="mot de passe">Mot de passe</label>
-            <input type="password" id="motDePasse" name="mot de passe">
+            <input class="input" type="password" id="motDePasse" name="mot de passe">
         </div>
         <button class="btn-se-connecter" type="submit">Se connecter</button>
-    </section>
+    </form>
+	<a class="lien-mot-de-passe-oublie" href="">Mot de passe oublié</a>
 </main>
 
 <footer>

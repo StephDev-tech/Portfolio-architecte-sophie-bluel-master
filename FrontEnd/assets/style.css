@@ -30,6 +30,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
+	;
 }
 ol, ul {
 	list-style: none;
@@ -232,34 +234,72 @@ button:hover{
 
 /***********************************************************CSS PAGE LOG IN*****************************************************/
 .body-log-in{
-	height: 95vh;
+	height: 100vh;
+	background-color: #FFFEF8;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .main-log-in{
 	height: 70%;
+
 }
 
-.login{
-	text-decoration: none;
+.titre-log-in{
+	margin-bottom: 45px;
 }
 
-.section-log-in{
-	height: 40%;
+.form-log-in{
+	height: 70%;
+	margin: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-around;
 }
 
 .div-input{
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	margin-bottom: 25px;
 }
 
 .titre-input{
 	font-family: 'Work Sans';
 	color: #3d3d3d;
 	font-weight: bold;
+}
+
+.input{
+	width: 379px;
+	height: 45px;
+	background-color: white;
+	border: 2px solid #FFFFFF;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.btn-se-connecter{
+	padding: 0;
+	width: 179px;
+	height: 36px;
+	background-color: #1D6154;
+	margin-top: 15px;
+	color: white;
+	font-size: 14px;
+}
+
+.lien-mot-de-passe-oublie{
+	margin-top: 30px;
+	color: black;
+	text-decoration: none;
+	border-bottom: 1px solid black;
+	font-size: 14px;
+	font-family: "Work Sans";
+}
+
+.lien-mot-de-passe-oublie:hover{
+	color: #B1663C;
+	border-bottom: 1px solid #B1663C;
 }
 
