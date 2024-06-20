@@ -177,35 +177,42 @@ const envoieIdentifiantConnexion = async (event) => {
     }
 }
 /***************************************MODAL*********************************/
+// Je fais une fonction pour ouvrir la modal  
 const openModal = () => {
     const modal = document.getElementById("modal")
     console.log(modal);
     modal.removeAttribute("style")
 }
 
+//Je fais une fonction pour fermer la modal
 const closeModal = () => {
     const modal = document.getElementById("modal")
     console.log(modal);
     modal.setAttribute("style","display: none")
 }
 
+//Je récupere mon lien 
 const boutonModifier = document.querySelector(".js-lien-div-admin")
+// Je lui met un listener pour qu'au click il ouvre la modal
 boutonModifier.addEventListener('click', openModal)
 
+//Je recupère mon bouton fermer 
 const boutonfermer = document.querySelector(".bouton-fermer-modal")
+//Je met un listener pour qu'au click il ferme la modal
 boutonfermer.addEventListener('click', closeModal)
 
+//Je gère la propagation a la fermeture de la modal 
+//Je recupère la modal 
 const modalBackground = document.querySelector("#modal")
-modalBackground.addEventListener('click', (event) =>{   
+//Je lui met un listener pour qu'au click
+modalBackground.addEventListener('click', (event) =>{ 
+    // Si on click sur l'arrière plan la modal se ferme  
     if (event.target === modalBackground) {
-        console.log('Événement déclenché sur l\'élément parent');
-        closeModal()
+        closeModal()   
     } else {
-        console.log('Événement propagé vers l\'enfant');
-        // j'empêche la propagation vers l'enfant
+        //Sinon j'empêche la propagation
         event.stopPropagation();
     } 
-
 })
 
 
