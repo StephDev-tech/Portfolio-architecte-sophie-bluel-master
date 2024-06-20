@@ -85,7 +85,7 @@ if(admin != null){
                     //Je récupere les projets dans le tableau projets et pour chaque résultat 
                     allWorks.forEach((projet) => {
                         //Je reconstruit les éléments HTML avec ma fonction
-                        creerLesProjetsEnHtml(projet)
+                        creerLesProjetsEnHtml(projet,".gallery")
                     })
                 //Sinon Je met dans une variable mon tableau de résultat filtré par son id categorie
                 }else {
@@ -93,13 +93,12 @@ if(admin != null){
                     //Pour chaque projet filtré
                     projetsFiltres.forEach((projet) => {
                         //Je reconstruit les éléments HTML avec ma fonction
-                        creerLesProjetsEnHtml(projet)
+                        creerLesProjetsEnHtml(projet,".gallery")
                     })
                 }
             })
         }) 
     })
-
 }
 
 /******************************Formulaire de connexion****************************/
@@ -158,7 +157,7 @@ const envoieIdentifiantConnexion = async (event) => {
 
     //Si l'utilisateur ne rempli pas les champs
     } else {
-        //J'affiche dans la consol l'erreur
+        //J'affiche dans la console l'erreur
         console.error("Les champs email et mot de passe sont requis.");
         //Je récupère mon form 
         const form = document.getElementById("monForm")
