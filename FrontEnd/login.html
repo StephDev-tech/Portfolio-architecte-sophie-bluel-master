@@ -25,7 +25,7 @@
 </header>
 <main class="main-log-in">
 	<h2 class="titre-log-in">Log in</h2>
-    <form class="form-log-in" action="http://localhost:5678/api/users/login" method="post" id="monForm">
+    <form class="form-log-in" id="monForm">
         <div class="div-input">
             <label class="titre-input" for="email">E-mail</label>
             <input class="input" type="text" id="email" name="email">
@@ -34,7 +34,7 @@
             <label class="titre-input" for="mot de passe">Mot de passe</label>
             <input class="input" type="password" id="motDePasse" name="mot de passe">
         </div>
-        <button class="btn-se-connecter" type="submit">Se connecter</button>
+        <button class="btn-se-connecter" type="submit" onclick="envoieIdentifiantConnexion(event)">Se connecter</button>
     </form>
 	<a class="lien-mot-de-passe-oublie" href="">Mot de passe oublié</a>
 </main>
