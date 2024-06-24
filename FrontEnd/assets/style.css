@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	background-color: #FFFEF8;
+	overflow-x: hidden
 	;
 }
 ol, ul {
@@ -340,7 +341,7 @@ button:hover{
 	color: red;
 	font-style: italic;	
 }
-/*******************************************CSS MODAL*********************************************************************/
+/*******************************************CSS version admin et modal*********************************************************************/
 .modal{
 	position: fixed;
 	top: 0;
@@ -424,3 +425,38 @@ width: 100%;
 	color: white;
 }
 
+.hide{
+	display: none;
+}
+
+.relative{
+	position: relative;
+}
+
+.bouton-supprimer{
+	width: 17px;
+	height: 17px;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: initial;
+	border-radius: 3px;
+	background-color: black;
+	color: white;
+	position: absolute;
+	top: 7px;
+	right: 7px;
+}
+
+.bouton-supprimer > .fa-trash-can{
+	display: initial;	
+	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	font-size: 10px;
+}

@@ -17,15 +17,6 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
     figure.innerHTML = `<img src="${projet.imageUrl}" alt="${projet.title}"><figcaption>${projet.title}</figcaption>`
     const galleryImage = document.querySelector(classParent)
     galleryImage.append(figure)
-
- 
-}
-
-const erreurSaisi = (texte) =>{
-    let p = document.createElement("p")
-    p.innerHTML = texte
-    p.setAttribute("class","msg-erreur")
-    return p
 }
 
 /*************************************Projets********************/
@@ -42,15 +33,12 @@ const genererTousLesProjets = (classParent) => {
 }
 genererTousLesProjets(".gallery")
 
-genererTousLesProjets(".gallery-modal")
-
-
 /***********************************Filtres***********************/
 const admin = localStorage.getItem("token")
 if(admin != null){ 
     const elementAdmin = document.querySelectorAll(".admin")
     elementAdmin.forEach((element)=>{
-        element.removeAttribute("style")
+        element.classList.remove("hide")
     })
 }else{
     //J'intègre dynamiquement les filtres
@@ -101,99 +89,37 @@ if(admin != null){
     })
 }
 
-/******************************Formulaire de connexion****************************/
-//j'envoie les identifiants et reçois un token
-const envoieIdentifiantConnexion = async (event) => {
-    event.preventDefault();
-    
-    // Je récupère les valeurs des input
-    let email = document.getElementById("email");
-    let motDePasse = document.getElementById("motDePasse");
-    
-    //Si l'utilisateur rempli les champs 
-    if(email.value !== '' || motDePasse.value !== ''){
-        //je crée un objet JSON avec l'email et le mot de passe 
-        const infoConnexion = JSON.stringify({ "email": email.value, "password": motDePasse.value });
-        //je propose une requête a l'API
-        try{
-            // Je paramètre la requête pour l'API
-            const response = await fetch("http://localhost:5678/api/users/login", {
-                method: "POST",
-                body: infoConnexion,
-                headers: {'Content-Type': 'application/json' }
-            })
-
-            // si la rep est ok 
-            if (response.ok) {
-                //Je récupère la réponse sous format JSON
-                const rep = await response.json();
-                //Je range dans le localstorage le token (j'entre le nom de ma valeur puis sa valeur)
-                localStorage.setItem("token", rep.token)  
-                //Je redirige le client sur la page d'accueil
-                window.location.href = "./index.html"
-            } else {
-                //J'envoie à la console le type d'erreur 
-                console.error("identifiant et mot de passe incorrect")
-                //Je récupère mon form 
-                const form = document.getElementById("monForm")
-                //Je vérifie si il y a un msg erreur
-                let msgErreur = document.querySelector(".msg-erreur")
-                //Si j'ai un msg erreur 
-                if(msgErreur != null){
-                    //Je le supprime 
-                    msgErreur.remove()
-                    //Et je remet le nouveaux message 
-                    form.insertBefore(erreurSaisi("les informations utilisateur / mot de passe ne sont pas correctes"), form.children[2])
-                }else{
-                    //Sinon j'affiche le message d'erreur directement 
-                    form.insertBefore(erreurSaisi("les informations utilisateur / mot de passe ne sont pas correctes"), form.children[2])
-                }
-            }
-        //Je gère l'exception avec le catch pour ne pas planter le backend  
-        } catch (error) {
-            console.error("Erreur lors de l'envoi de la requête:", error);
-            errorMessage.textContent = "Erreur lors de l'envoi de la requête.";
-        }
-
-    //Si l'utilisateur ne rempli pas les champs
-    } else {
-        //J'affiche dans la console l'erreur
-        console.error("Les champs email et mot de passe sont requis.");
-        //Je récupère mon form 
-        const form = document.getElementById("monForm")
-        //Je vérifie si il y a un msg erreur
-        let msgErreur = document.querySelector(".msg-erreur")
-        //Si j'ai un msg erreur 
-        if(msgErreur != null){
-            //Je le supprime 
-            msgErreur.remove()
-            //Et je remet le nouveaux message 
-            form.insertBefore(erreurSaisi("Veuillez saisir les informations utilisateur / mot de passe"), form.children[2])
-        }else{
-            //Sinon j'affiche le message d'erreur directement 
-            form.insertBefore(erreurSaisi("Veuillez saisir les informations utilisateur / mot de passe"), form.children[2])
-        }    
-    }
-}
 /***************************************MODAL*********************************/
 // Je fais une fonction pour ouvrir la modal  
 const openModal = () => {
     const modal = document.getElementById("modal")
-    console.log(modal);
-    modal.removeAttribute("style")
+    modal.classList.remove("hide")
 }
 
 //Je fais une fonction pour fermer la modal
 const closeModal = () => {
     const modal = document.getElementById("modal")
-    console.log(modal);
-    modal.setAttribute("style","display: none")
+    modal.classList.add("hide")
 }
 
 //Je récupere mon lien 
 const boutonModifier = document.querySelector(".js-lien-div-admin")
 // Je lui met un listener pour qu'au click il ouvre la modal
-boutonModifier.addEventListener('click', openModal)
+boutonModifier.addEventListener('click', () => {
+    openModal()
+    genererTousLesProjets(".gallery-modal")
+    let galleryModal = document.querySelector(".gallery-modal")
+    setTimeout(() => {
+    let figures = galleryModal.querySelectorAll(":scope > * ")
+    figures.forEach((figure) => {
+        figure.setAttribute("class", "relative")
+        let boutonSupprimer = document.createElement('button')
+        boutonSupprimer.innerHTML = `<i class="fa-solid fa-trash-can"></i>`
+        boutonSupprimer.setAttribute("class", "bouton-supprimer")
+        figure.appendChild(boutonSupprimer)
+    })
+    }, 1000)
+})
 
 //Je recupère mon bouton fermer 
 const boutonfermer = document.querySelector(".bouton-fermer-modal")
@@ -204,15 +130,22 @@ boutonfermer.addEventListener('click', closeModal)
 //Je recupère la modal 
 const modalBackground = document.querySelector("#modal")
 //Je lui met un listener pour qu'au click
-modalBackground.addEventListener('click', (event) =>{ 
+modalBackground.addEventListener('click', (e) =>{ 
     // Si on click sur l'arrière plan la modal se ferme  
-    if (event.target === modalBackground) {
+    if (e.target === modalBackground) {
         closeModal()   
     } else {
         //Sinon j'empêche la propagation
-        event.stopPropagation();
+        e.stopPropagation();
     } 
 })
+
+
+
+
+
+
+
 
 
 
