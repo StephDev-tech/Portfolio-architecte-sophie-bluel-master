@@ -13,8 +13,9 @@ const demandeDonneesApi = async (dataType,typeDeDemande,corpdDeLaDemande) => {
 /*************************************Templates********************/
 const creerLesProjetsEnHtml = (projet, classParent) => {
     //Je crée les éléments de la structure 
-    let figure = document.createElement("figure")
+    const figure = document.createElement("figure")
     figure.innerHTML = `<img src="${projet.imageUrl}" alt="${projet.title}"><figcaption>${projet.title}</figcaption>`
+    figure.setAttribute("class", `suppression${projet.id}`)
     const galleryImage = document.querySelector(classParent)
     galleryImage.append(figure)
 }
@@ -34,7 +35,7 @@ const genererTousLesProjets = (classParent) => {
 genererTousLesProjets(".gallery")
 
 /***********************************Filtres***********************/
-const admin = localStorage.getItem("token")
+const admin = sessionStorage.getItem("token")
 if(admin != null){ 
     const elementAdmin = document.querySelectorAll(".admin")
     elementAdmin.forEach((element)=>{
@@ -102,43 +103,149 @@ const closeModal = () => {
     modal.classList.add("hide")
 }
 
+//fonction pour créer et activer le bouton supprimer
+const creerActiverBtnSupp = () => {
+    //Je récupère ma modal
+    const galleryModal = document.querySelector(".gallery-modal")
+    //Je retarde la création des boutons supprimer 
+    setTimeout(() => {
+        //Je récupère les balises figure
+    const figures = galleryModal.querySelectorAll(":scope > * ")
+    //J'initialise une boucle qui va récupérer chaque figure 
+    figures.forEach((figure) => {
+        //J'ajouter une class 
+        figure.classList.add("relative")
+        //Je crée mon bouton 
+        const boutonSupprimer = document.createElement('button')
+        //Je mets une icone corbeille a mon bouton
+        boutonSupprimer.innerHTML = `<i class="fa-solid fa-trash-can"></i>`
+        //J'ajoute une class pour le css
+        boutonSupprimer.setAttribute("class", "bouton-supprimer")
+        //J'ajoute le bouton dans ma balise figure
+        figure.appendChild(boutonSupprimer)
+        //Je récupère mes bouton pour lui ajouter un event listener
+        boutonSupprimer.addEventListener('click', async (e) => {
+            e.preventDefault()
+            //Dans la liste de class je récupère la première class
+            const classASupprimer = figure.classList[0]
+            //Je recupère l'id du projet en supprimant la partie "suppression"
+            const idImage = classASupprimer.replace('suppression', "")
+            //Je retire la figure de l'image concerné dans la galerie-modal
+            figure.remove()
+            //Je recupère la figure dans la galerie principale
+            const imageGallery = document.querySelector(`.${classASupprimer}`)
+            //Je la supprime
+            imageGallery.remove()           
+                try {
+                //j'envoie ma requête à l'api pour supprimer en bdd
+                const response = await fetch(`http://localhost:5678/api/works/${idImage}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': '*/*', 
+                        'Authorization': `Bearer ${admin}` // je recupère le token
+                     }
+                })
+                if ((response.status === 200)) {
+                    console.log(response, "la suppression à réussi");
+                } else {
+                    console.error(response, "la suppression à rencontrer une erreur");
+                }
+            }catch{
+                console.log("error")
+            }
+        })
+    })
+    }, 100)
+}
+
+//je recupère la modal à vider 
+const viderModal = document.querySelector(".gallery-modal")
+
 //Je récupere mon lien 
 const boutonModifier = document.querySelector(".js-lien-div-admin")
 // Je lui met un listener pour qu'au click il ouvre la modal
 boutonModifier.addEventListener('click', () => {
     openModal()
     genererTousLesProjets(".gallery-modal")
-    let galleryModal = document.querySelector(".gallery-modal")
-    setTimeout(() => {
-    let figures = galleryModal.querySelectorAll(":scope > * ")
-    figures.forEach((figure) => {
-        figure.setAttribute("class", "relative")
-        let boutonSupprimer = document.createElement('button')
-        boutonSupprimer.innerHTML = `<i class="fa-solid fa-trash-can"></i>`
-        boutonSupprimer.setAttribute("class", "bouton-supprimer")
-        figure.appendChild(boutonSupprimer)
-    })
-    }, 1000)
+    creerActiverBtnSupp()
 })
 
 //Je recupère mon bouton fermer 
 const boutonfermer = document.querySelector(".bouton-fermer-modal")
 //Je met un listener pour qu'au click il ferme la modal
-boutonfermer.addEventListener('click', closeModal)
+boutonfermer.addEventListener('click', () => {
+    closeModal()
+    viderModal.innerHTML = ""
+})
 
 //Je gère la propagation a la fermeture de la modal 
 //Je recupère la modal 
 const modalBackground = document.querySelector("#modal")
 //Je lui met un listener pour qu'au click
-modalBackground.addEventListener('click', (e) =>{ 
+modalBackground.addEventListener('click', (e) => { 
     // Si on click sur l'arrière plan la modal se ferme  
     if (e.target === modalBackground) {
-        closeModal()   
+        closeModal() 
+        viderModal.innerHTML = ""
     } else {
         //Sinon j'empêche la propagation
         e.stopPropagation();
     } 
 })
+
+//Je recupère la modal ajouter photo
+const modalAjoutPhoto = document.querySelector('.modal-Ajouter-photo')
+//je recupère la modal galerie image
+const modalGalleryPhoto = document.querySelector('.div-modal')
+
+//Je récupère le bouton ajouter photo
+const boutonAjouterPhoto = document.getElementById("btnAjouterPhoto")
+//je lui met un listener pour qu'au click
+boutonAjouterPhoto.addEventListener('click', () => {
+    //il cache la modal galerie image
+    modalGalleryPhoto.classList.add('hide')
+    // affiche la modal ajouter photo 
+    modalAjoutPhoto.classList.remove('hide')
+})
+
+//Je recupère mon bouton fermer 
+const boutonfermerAp = document.querySelector(".bouton-fermer-ap")
+//Je met un listener pour qu'au click 
+boutonfermerAp.addEventListener('click', () => {
+    //il cache la modal ajouter photo 
+    modalAjoutPhoto.classList.add('hide')
+    //il ferme la modal 
+    closeModal()
+    //il retire la class hide dans la modal galerie image
+    modalGalleryPhoto.classList.remove('hide')
+    // il la vide
+    viderModal.innerHTML = ""
+})
+
+//Je recupère mon bouton retour sur la modal ajouter photo
+const boutonRetourAp = document.querySelector(".bouton-retour-ap")
+// je lui met un listener pour qu'au click 
+boutonRetourAp.addEventListener('click', () => {
+    //il n'affiche plus la modal ajouter photo
+    modalAjoutPhoto.classList.add('hide')
+    //il affiche la modal galerie image 
+    modalGalleryPhoto.classList.remove('hide')
+})
+
+
+const btnValider = document.querySelector(".bouton-valider")
+btnValider.addEventListener('click', async () => {
+    let image = document.getElementById("inputAjouterPhoto")
+    const fichier = image.files[0]
+    let titre = document.getElementById("inputText").value
+    let categorie = document.getElementById("menuCategorie").value
+    /*const envoie = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+
+    })*/
+})
+
+
 
 
 

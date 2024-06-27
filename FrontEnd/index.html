@@ -53,7 +53,39 @@
 			<h3 class="titre-div-modal">Galerie photo</h3>
 			<div class="gallery-modal">
 			</div>
-			<button class="bouton-div-modal">Ajouter une photo</button>
+			<button id="btnAjouterPhoto" class="bouton-ajouter-photo">Ajouter une photo</button>
+		</div>
+
+		<div id="modalAjouterPhoto" class="modal-Ajouter-photo div-modal hide">
+			<div class="bouton-retour-fermer">
+				<button class="bouton-retour-ap"><i class="fa-solid fa-arrow-left"></i></button>
+				<button class="bouton-fermer-ap"><i class="fa-solid fa-x"></i></button>
+			</div>
+			<h3 class="titre-div-modal titre-ajout-photo">Ajout photo</h3>
+			<form action="" class="form-ajouter-photo">
+				<div class="zone-ajout-photo">
+					<i class="fa-regular fa-image"></i>
+					<div class="ajouter-photo">
+						<label for="" class="titre-ajouter-photo">+ Ajouter photo</label>
+						<input type="file" id="inputAjouterPhoto" class="input-ajouter-photo">
+					</div>
+					<p>jpg, png : 4mo max</p>				
+				</div>
+				<div class="test">
+					<label for="title" class="titre-input">Titre</label>
+					<input type="text" id="inputText" name="title" class="placeholder">
+				</div>
+				<div class="test">
+					<label for="categorie" class="titre-input">Catégorie</label>
+					<select name="" id="menuCategorie" class="placeholder">
+						<option value=""></option>
+						<option value="1">Objets</option>
+						<option value="2">Appartements</option>
+						<option value="3">Hôtels & Restaurants</option>
+					</select>
+				</div>
+			</form>
+			<button class="bouton-valider">Valider</button>
 		</div>
 	</aside>
 	<section id="contact">

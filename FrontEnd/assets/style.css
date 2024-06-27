@@ -386,19 +386,19 @@ button:hover{
 	height: 30px;
 	margin-top: 30px;
 	font-size: 26px;
+	font-weight: 400;
 	font-family: "Work Sans";
 }
 
 .gallery-modal{
 	height: 80%;
-	width: 460px;
-	padding: 30px 20px 50px 20px;
+	width: 500px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-self: center;
-	justify-content: space-between;
+	justify-content: flex-start;
+	gap: 15px;
 	align-items: center;
 	border-bottom: 2px solid grey;
 	margin-bottom: 30px;
@@ -414,10 +414,12 @@ button:hover{
 }
 
 .gallery-modal * img {
-width: 100%;
+	width: 100%;
+	display: flex;
+	justify-self: center;
 }
 
-.bouton-div-modal{
+.bouton-ajouter-photo{
 	width: 50%;
 	height: 50px;
 	margin: 15px 0 15px 0;
@@ -459,4 +461,120 @@ width: 100%;
 	width: 100%;
 	margin: 0;
 	font-size: 10px;
+}
+/**************************************************Modal Ajout Photo*************************************/
+.bouton-retour-fermer{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.bouton-retour-ap{
+	width: fit-content;
+	border: none;
+	color: black;
+	font-weight: bold;
+}
+
+.bouton-retour-ap:hover{
+	background-color: #fff;
+	color: black;
+}
+
+.bouton-fermer-ap{
+	width: fit-content;
+	border: none;
+	color: black;
+}
+
+.bouton-fermer-ap:hover{
+	background-color: #fff;
+	color: black;
+}
+
+.titre-ajout-photo{
+	margin-top: 0;
+	margin-bottom: 25px;
+}
+
+.form-ajouter-photo{
+	height: 70%;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-bottom: #B3B3B3 2px solid;
+}
+
+.zone-ajout-photo{
+	position: relative;
+	height: 190px;
+	width: 100%;
+	margin-bottom: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	border-radius: 5px;
+	background-color: #E8F1F6;
+	
+}
+
+.fa-image{
+	font-size: 60px;
+	color: #CBD6DC;
+}
+
+.ajouter-photo{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 45px;
+	width: 250px;
+	border: 1px solid #CBD6DC;
+	border-radius: 30px;
+	background-color: #CBD6DC;
+}
+
+.titre-ajouter-photo{
+	color: #306685;
+}
+
+.input-ajouter-photo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+}
+
+.test{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 40px;
+}
+
+.placeholder{
+	height: 51px;
+	border: 1px solid white;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	color: #444444;
+}
+
+.bouton-valider{
+	width: 50%;
+	height: 50px;
+	margin: 15px 0 15px 0;
+	background-color: #A7A7A7;
+	border: none;
+	color: white;
+}
+
+.bouton-valider:hover{
+	background-color: #A7A7A7;
+
 }

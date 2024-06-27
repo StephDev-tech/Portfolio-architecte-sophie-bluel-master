@@ -1,4 +1,5 @@
 /******************************Template****************************/
+//fonction pour l'affichage des message erreur
 const erreurSaisi = (texte) =>{
     let p = document.querySelector(".msg-erreur")
     p.innerHTML = texte
@@ -25,25 +26,24 @@ const envoieIdentifiantConnexion = async (event) => {
                 body: infoConnexion,
                 headers: {'Content-Type': 'application/json' }
             })
-
             // si la rep est ok 
-            if (response.ok) {
+            if (response.status === 200) {
                 //Je récupère la réponse sous format JSON
                 const rep = await response.json();
                 //Je range dans le localstorage le token (j'entre le nom de ma valeur puis sa valeur)
-                localStorage.setItem("token", rep.token)  
+                sessionStorage.setItem("token", rep.token)  
                 //Je redirige le client sur la page d'accueil
                 window.location.href = "./index.html"
-            } else {
-                //J'envoie à la console le type d'erreur 
-                console.error("identifiant et mot de passe incorrect")
-                erreurSaisi("identifiant et mot de passe incorrect")
+                //Je gère le status reponse de type 401 et 404
+            } else if (response.status === 401 ||response.status === 404)  {
+                //J'envoie un message erreur au clients 
+                erreurSaisi("identifiant et/ou mot de passe incorrect")               
             }
         //Je gère l'exception avec le catch pour ne pas planter le backend  
         } catch (error) {
-            console.error("test Erreur lors de l'envoi de la requête:", error);
+            console.error('Le server à rencontrer un problème.');
+            erreurSaisi('Le server à rencontrer un problème.');
         }
-
     //Si l'utilisateur ne rempli pas les champs
     } else {
         //J'affiche dans la console l'erreur
