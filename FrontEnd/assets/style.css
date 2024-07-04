@@ -78,7 +78,6 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -214,7 +213,7 @@ li{
 	justify-content: center;
 }
 
-button{
+.bouton-filtre{
 	width: 100%;
 	height: 37px;
 	border: 1px solid #1D6154;
@@ -228,9 +227,9 @@ button{
 	background-color: white;
 }
 
-button:hover{
-	color: white;
+.active{
 	background-color: #1D6154;
+	color: white;
 }
 
 .js-div-admin{
@@ -316,6 +315,8 @@ button:hover{
 	padding: 0;
 	width: 179px;
 	height: 36px;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
 	background-color: #1D6154;
 	margin-top: 15px;
 	color: white;
@@ -347,7 +348,7 @@ button:hover{
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -367,15 +368,12 @@ button:hover{
 }
 
 .bouton-fermer-modal{
+	width: 90%;
+	display: flex;
+	justify-content: right;
 	border: none;
 	color: black;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.bouton-fermer-modal:hover{
-	background-color: #fff;
-	color: black;
+	background-color: white;
 }
 
 .titre-div-modal{
@@ -392,16 +390,16 @@ button:hover{
 
 .gallery-modal{
 	height: 80%;
-	width: 500px;
+	width: 90%;
+	padding: 20px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: flex-start;
-	gap: 15px;
 	align-items: center;
+	gap: 15px;
 	border-bottom: 2px solid grey;
-	margin-bottom: 30px;
+	overflow-y: scroll;
 }
 
 .gallery-modal * {
@@ -416,19 +414,23 @@ button:hover{
 .gallery-modal * img {
 	width: 100%;
 	display: flex;
-	justify-self: center;
+	justify-content: center;
+	align-items: center;
 }
 
 .bouton-ajouter-photo{
 	width: 50%;
 	height: 50px;
-	margin: 15px 0 15px 0;
+	margin-top: 30px;
 	background-color: #1D6154;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
 	color: white;
-}
-
-.hide{
-	display: none;
+	padding: 0px 20px 0px 20px;
+	box-sizing: border-box;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: 'Syne';
 }
 
 .relative{
@@ -473,33 +475,26 @@ button:hover{
 	width: fit-content;
 	border: none;
 	color: black;
+	background-color: white;
 	font-weight: bold;
-}
-
-.bouton-retour-ap:hover{
-	background-color: #fff;
-	color: black;
 }
 
 .bouton-fermer-ap{
 	width: fit-content;
 	border: none;
 	color: black;
-}
-
-.bouton-fermer-ap:hover{
-	background-color: #fff;
-	color: black;
+	background-color: white;
 }
 
 .titre-ajout-photo{
 	margin-top: 0;
-	margin-bottom: 25px;
+	margin-bottom: 20px;
 }
 
 .form-ajouter-photo{
 	height: 70%;
 	width: 80%;
+	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -508,15 +503,17 @@ button:hover{
 
 .zone-ajout-photo{
 	position: relative;
-	height: 190px;
+	height: 300px;
 	width: 100%;
-	margin-bottom: 40px;
+	padding: 5px;
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 	align-items: center;
 	border-radius: 5px;
 	background-color: #E8F1F6;
+	margin-bottom: 30px;
 	
 }
 
@@ -525,18 +522,35 @@ button:hover{
 	color: #CBD6DC;
 }
 
+.preview{
+	height: 100%;
+	position: absolute;
+	top:0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	display: flex;
+	align-self: center;
+	justify-self: center;
+	z-index: 1;
+}
+
 .ajouter-photo{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: 45px;
-	width: 250px;
+	width: 200px;
 	border: 1px solid #CBD6DC;
 	border-radius: 30px;
 	background-color: #CBD6DC;
 }
+.bkg-image-input{
+	background-color: #E8F1F6;
+	border: initial;
 
+}
 .titre-ajouter-photo{
 	color: #306685;
 }
@@ -548,6 +562,7 @@ button:hover{
 	right: 0;
 	bottom: 0;
 	opacity: 0;
+	z-index: 2;
 }
 
 .test{
@@ -568,13 +583,22 @@ button:hover{
 .bouton-valider{
 	width: 50%;
 	height: 50px;
-	margin: 15px 0 15px 0;
-	background-color: #A7A7A7;
+	margin-top: 30px;
+	padding: 0px 20px 0px 20px;
+	box-sizing: border-box;
 	border: none;
+	border-radius: 60px;
+	background-color: #A7A7A7;
 	color: white;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: 'Syne';
 }
 
-.bouton-valider:hover{
-	background-color: #A7A7A7;
+.valide{
+	background-color: #1D6154;	
+}
 
+.hide{
+	display: none;
 }

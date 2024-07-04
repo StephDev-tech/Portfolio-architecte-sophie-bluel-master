@@ -62,30 +62,33 @@
 				<button class="bouton-fermer-ap"><i class="fa-solid fa-x"></i></button>
 			</div>
 			<h3 class="titre-div-modal titre-ajout-photo">Ajout photo</h3>
-			<form action="" class="form-ajouter-photo">
+			<form id="form" class="form-ajouter-photo">
 				<div class="zone-ajout-photo">
 					<i class="fa-regular fa-image"></i>
 					<div class="ajouter-photo">
 						<label for="" class="titre-ajouter-photo">+ Ajouter photo</label>
-						<input type="file" id="inputAjouterPhoto" class="input-ajouter-photo">
+						<input type="file" name="file" id="inputAjouterPhoto" accept="image/jpg, image/png" class="input-ajouter-photo">
 					</div>
-					<p>jpg, png : 4mo max</p>				
+					<img src="" alt="" id="preview" class="preview">
+					<p class="texte-ajouter-photo">jpg, png : 4mo max</p>
+					<span id="errorImage"></span>				
 				</div>
 				<div class="test">
 					<label for="title" class="titre-input">Titre</label>
 					<input type="text" id="inputText" name="title" class="placeholder">
+					<span id="errorTitre"></span>
 				</div>
 				<div class="test">
 					<label for="categorie" class="titre-input">Catégorie</label>
-					<select name="" id="menuCategorie" class="placeholder">
-						<option value=""></option>
-						<option value="1">Objets</option>
-						<option value="2">Appartements</option>
-						<option value="3">Hôtels & Restaurants</option>
+					<select name="categorie" id="menuCategorie" class="placeholder">
+						<option value="0"></option>
 					</select>
+					<span id="errorCategorie"></span>
+
 				</div>
 			</form>
-			<button class="bouton-valider">Valider</button>
+			<button class="bouton-valider valider">Valider</button>
+			<span id="msgUtilisateur"></span>
 		</div>
 	</aside>
 	<section id="contact">
