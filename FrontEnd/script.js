@@ -101,7 +101,67 @@ const genererTousLesProjets = (classParent) => {
 };
 genererTousLesProjets(".gallery");
 
-/***********************************Filtres***********************/
+/************************************************************Filtres*********************************************************/
+
+	//je fais une fonction pour générer les filtres
+	const genererFiltres = () => {
+		//J'intègre dynamiquement les filtres
+		//J'initialise mon set et j'ajoute une nouvelle catégorie dans mon set
+		let setCategories = new Set();
+		setCategories.add({ id: 0, name: "Tous" });
+		//Je récupère les objets catégories dans l'API
+		demandeDonneesApi("categories").then((reponses) => {
+			categories = reponses
+			//Une fois la reponse de l'API réceptionnée je boucle sur chaque éléments
+			reponses.forEach((reponse) => {
+				//J'ajoute dans mon set les catégories de l'API
+				setCategories.add(reponse);
+			});
+			console.log(setCategories);
+			//Je boucle sur l'ensemble des catégories de mon set pour créer des boutons
+			setCategories.forEach((categorie) => {
+				//je crée les éléments de la structure
+				let li = document.createElement("li");
+				li.innerHTML = `<button id=${categorie.id} class="bouton-filtre">${categorie.name}</button>`;
+				//je l'intègre au document HTML
+				const listeFiltre = document.querySelector(".listeFiltre");
+				listeFiltre.append(li);
+				//Pour chaque bouton je lui mets un écouteurs d'évenement
+				li.addEventListener("click", () => {
+					let boutonFiltre = document.querySelectorAll('.bouton-filtre')
+					boutonFiltre.forEach(bouton => {
+						bouton.classList.remove('active')
+					})
+					const bouton = li.querySelector(':scope > *')
+					bouton.classList.add("active")
+					//Je selectionne ma class gallery
+					const galleryImage = document.querySelector(".gallery");
+					//Je supprime les enfants de ma section gallery
+					galleryImage.innerHTML = "";
+					//Si mon id de la catégorie est égale à 0
+					if (categorie.id === 0) {
+						//Je récupere les projets dans le tableau projets et pour chaque résultat
+						allWorks.forEach((projet) => {
+							//Je reconstruit les éléments HTML avec ma fonction
+							creerLesProjetsEnHtml(projet, ".gallery");
+						});
+						//Sinon Je met dans une variable mon tableau de résultat filtré par son id categorie
+					} else {
+						const projetsFiltres = allWorks.filter(
+							(projet) => projet.categoryId === categorie.id
+						);
+						//Pour chaque projet filtré
+						projetsFiltres.forEach((projet) => {
+							//Je reconstruit les éléments HTML avec ma fonction
+							creerLesProjetsEnHtml(projet, ".gallery");
+						});
+					}
+				});
+			});
+		});		
+	}
+
+/**************************************************Vérification de l'admin***************************************************/
 
 //je stock mon token dans une variable
 const admin = sessionStorage.getItem("token");
@@ -112,65 +172,21 @@ if (admin != null) {
 	elementAdmin.forEach((element) => {// et pour chaque element 
 		element.classList.remove("hide");//je lui retire la class 'hide'
 	});
-} else {
-	//J'intègre dynamiquement les filtres
-	//J'initialise mon set et j'ajoute une nouvelle catégorie dans mon set
-	let setCategories = new Set();
-	setCategories.add({ id: 0, name: "Tous" });
-
-	//Je récupère les objets catégories dans l'API
-	demandeDonneesApi("categories").then((reponses) => {
-		categories = reponses
-		//Une fois la reponse de l'API réceptionnée je boucle sur chaque éléments
-		reponses.forEach((reponse) => {
-			//J'ajoute dans mon set les catégories de l'API
-			setCategories.add(reponse);
-		});
-		console.log(setCategories);
-		//Je boucle sur l'ensemble des catégories de mon set pour créer des boutons
-		setCategories.forEach((categorie) => {
-			//je crée les éléments de la structure
-			let li = document.createElement("li");
-			li.innerHTML = `<button id=${categorie.id} class="bouton-filtre">${categorie.name}</button>`;
-			//je l'intègre au document HTML
-			const listeFiltre = document.querySelector(".listeFiltre");
-			listeFiltre.append(li);
-			//Pour chaque bouton je lui mets un écouteurs d'évenement
-			li.addEventListener("click", () => {
-				let boutonFiltre = document.querySelectorAll('.bouton-filtre')
-				boutonFiltre.forEach(bouton => {
-					bouton.classList.remove('active')
-				})
-				const bouton = li.querySelector(':scope > *')
-				bouton.classList.add("active")
-				//Je selectionne ma class gallery
-				const galleryImage = document.querySelector(".gallery");
-				//Je supprime les enfants de ma section gallery
-				galleryImage.innerHTML = "";
-				//Si mon id de la catégorie est égale à 0
-				if (categorie.id === 0) {
-					//Je récupere les projets dans le tableau projets et pour chaque résultat
-					allWorks.forEach((projet) => {
-						//Je reconstruit les éléments HTML avec ma fonction
-						creerLesProjetsEnHtml(projet, ".gallery");
-					});
-					//Sinon Je met dans une variable mon tableau de résultat filtré par son id categorie
-				} else {
-					const projetsFiltres = allWorks.filter(
-						(projet) => projet.categoryId === categorie.id
-					);
-					//Pour chaque projet filtré
-					projetsFiltres.forEach((projet) => {
-						//Je reconstruit les éléments HTML avec ma fonction
-						creerLesProjetsEnHtml(projet, ".gallery");
-					});
-				}
+	  //je récupère mon li login
+	  let log = document.getElementById("log")
+	  //je le remplace par un lien logout
+	  log.innerHTML = `<a href="index.html">logout</a>`
+	  log.addEventListener('click', () => {//je lui met un listener pour qu'au click
+			sessionStorage.removeItem('token')//j'efface le token
+			elementAdmin.forEach((element) => {// et pour chaque element 
+				element.classList.add("hide");//j'ajoute la class 'hide'
 			});
-		});
-	});
+		})
+} else {
+	genererFiltres()
 }
 
-/***************************************MODAL*********************************/
+/*****************************************************************MODAL*****************************************************/
 
 // Je fais une fonction pour ouvrir la modal
 const openModal = () => {
@@ -227,6 +243,8 @@ modalBackground.addEventListener("click", (e) => {
 	if (e.target === modalBackground) {
 		closeModal();
 		viderModal.innerHTML = "";
+		modalAjoutPhoto.classList.add("hide");
+		modalGalleryPhoto.classList.remove("hide");
 	} else {
 		//Sinon j'empêche la propagation
 		e.stopPropagation();
@@ -274,7 +292,73 @@ boutonRetourAp.addEventListener("click", () => {
 	modalGalleryPhoto.classList.remove("hide");
 });
 
-/*********************************Aperçu image***************************/
+/********************************************Générer dynamiquement mes catégorie*********************************************/
+
+//Je récupère les données dans l'api pour les catégories 
+demandeDonneesApi("categories").then((categorie) => {
+	//je range les catégories dans un tableau
+	allCategories = categorie
+	//je récupère le tableau et pour chaque résultat du tableau : 
+	allCategories.forEach(categorie => {
+		//je crée une balise option
+		const option = document.createElement("option")
+		//j'intègre le nom de la catégorie
+		option.innerHTML = `${categorie.name}`
+		//je rajoute l'id de la catégorie dans la valeur
+		option.setAttribute('value', `${categorie.id}`)
+		//je récupère ma balise select
+		const menuCategorie = document.getElementById("menuCategorie")
+		//j'ajoute mes options au select
+		menuCategorie.appendChild(option)
+	})
+})
+
+/****************************************************Vérification de mes élément (input)*************************************/
+
+//Je récupère le bouton envoyé
+const btnEnvoyer = document.querySelector(".bouton-valider")
+
+	//Je crée une fonction qui désactive le bouton valider
+	const desactiveBtn = ()=>{
+		btnEnvoyer.classList.remove('valide')
+		btnEnvoyer.setAttribute("disabled","true")
+	}
+
+	//Je crée une fonction qui active le bouton valider
+	const activeBtn = () =>{
+		btnEnvoyer.classList.add('valide')
+		btnEnvoyer.removeAttribute("disabled")
+	}
+
+//Je paramètre mes éléments à faux par le biais d'un objet
+let acceptedForm = {
+	image : false,
+	title : false,
+	category : false
+}
+
+//Je crée une fonction pour vérifier si j'ai bien les données attendue
+const isCheckForm = () => {
+	const verif = acceptedForm.image && acceptedForm.title && acceptedForm.category
+	if (verif) {
+		activeBtn()
+		console.log('enlever le disabled');
+	} else {
+		desactiveBtn()
+		console.log('ajout disabled');
+	}
+	console.log( acceptedForm.image,acceptedForm.title,acceptedForm.category);
+	return verif
+}
+
+//Je récupère les span pour la gestion des message erreur
+let errorImage = document.getElementById("errorImage")//pour l'image
+let errorTitre = document.getElementById("errorTitre")//pour le titre
+let errorCategorie = document.getElementById("errorCategorie")//pour la catégorie
+let msgUtilisateur = document.getElementById("msgUtilisateur")//pour l'envoie des éléments
+
+	
+/*********************************Aperçu image et verification du format et taille de l'image*******************************/
 
 //je fais une fonction pour l'apercu de l'image avant envoie
 const apercuImage = () => {
@@ -297,126 +381,127 @@ const apercuImage = () => {
 	}
 }
 
+//je crée une fonction pour retirer les éléments de ma div zone-ajout-photo
+const retirerLesElements = () => {
+	const removableElements = document.querySelectorAll('.removable')
+	removableElements.forEach((element) => {
+		element.classList.add('hide')
+	})
+	document.querySelector(".ajouter-photo ").classList.add('bkg-image-input')
+}
+
+//je crée une fonction pour ajouter les éléments de ma div zone-ajout-photo
+const ajouterLesElements = () => {
+	const removableElements = document.querySelectorAll('.removable')
+	removableElements.forEach((element) => {
+		element.classList.remove('hide')
+	})
+	document.querySelector(".ajouter-photo ").classList.remove('bkg-image-input')
+}
+
 //je récupère mon input image 
 const inputImage = document.getElementById('inputAjouterPhoto')
-inputImage.addEventListener('change', ()=>{//je lui met un listener pour que quand il y'a un changement 
-	apercuImage()//j'utilise la fonction apercuImage pour afficher l'image télécharger 
-	
-	//je recupère les élément dans la div 'zone-ajouter-photo' et j'ajoute à chaque élément la class 'hide'
-	const icon = document.querySelector(".fa-image")
-	icon.classList.add("hide")
-	const label = document.querySelector(".titre-ajouter-photo")
-	label.classList.add("hide")
-	const divAjouter = document.querySelector(".ajouter-photo")
-	divAjouter.classList.add("bkg-image-input")
-	const text = document.querySelector(".texte-ajouter-photo")
-	text.classList.add("hide")
+let myFile = ''
+inputImage.addEventListener('change', (event)=>{//je lui met un listener pour que quand il y'a un changement 
+	const maxSize = 4000000;//la taille max pour l'image
+	const acceptedType = ["image/png", "image/jpg"]//le type de format accepeter
+	myFile = event.target.files[0]//je récupère les données de l'image 
+	if(myFile){//Si il y'a bien un fichier dans l'input
+		const isSizeOk = myFile.size < maxSize//je vérifie la taille 
+		const isTypeOk = acceptedType.includes(myFile.type)//je vérifie son format
+		if (isSizeOk && isTypeOk) {
+			apercuImage()//j'utilise la fonction apercuImage pour afficher l'image télécharger 
+			retirerLesElements()//je retire les éléments de ma div zone-ajout-photo
+			acceptedForm.image = true//je change la valeur de mon image à true dans mon objet
+			isCheckForm()//j'utilise ma fonction pour vérifier les données
+			errorImage.innerHTML= ""
+		} else  {//sinon
+			acceptedForm.image = false//je laisse ma valeur à false
+			isCheckForm()
+			image.classList.add("hide")//sinon je remet la class 'hide' à l'image
+
+		} 
+	}else{//sinon
+		apercuImage()//j'utilise la fonction apercuImage pour effacer l'image
+		ajouterLesElements()//j'ajoute les éléments de ma div zone-ajout-photo
+		acceptedForm.image = false//je laisse ma valeur à false
+		isCheckForm()
+		errorImage.innerHTML="Une image est requise."//j'affiche un message d'erreur
+		errorImage.style.color = 'red'
+	}
 }) 
 
-/*********************************Générer dynamiquement mes catégorie*****/
+/***************************************Vérification que l'input contient du texte*******************************************/
 
-//Je récupère les données dans l'api pour les catégories 
-demandeDonneesApi("categories").then((categorie) => {
-	//je range les catégories dans un tableau
-	allCategories = categorie
-	//je récupère le tableau et pour chaque résultat du tableau : 
-	allCategories.forEach(categorie => {
-		//je crée une balise option
-		const option = document.createElement("option")
-		//j'intègre le nom de la catégorie
-		option.innerHTML = `${categorie.name}`
-		//je rajoute l'id de la catégorie dans la valeur
-		option.setAttribute('value', `${categorie.id}`)
-		//je récupère ma balise select
-		const menuCategorie = document.getElementById("menuCategorie")
-		//j'ajoute mes options au select
-		menuCategorie.appendChild(option)
-	})
+//je récupère la valeur de mon input (text)
+let titre = document.getElementById("inputText")
+titre.addEventListener('change', (event)=>{//je lui met un listener pour que quand il y'a un changement 
+	const regEx = /^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?àâäéèêëïîôöùûüÿçñÁÀÂÄÉÈÊËÏÎÔÖÙÛÜŸÇÑ]{2,100}$/;
+	if(regEx.test(titre.value)){
+		acceptedForm.title = true
+		isCheckForm()
+		console.log('ok');
+		errorTitre.innerHTML = ""
+	}else{
+		console.log('pas ok');
+
+		acceptedForm.title = false
+		isCheckForm()
+		errorTitre.innerHTML= "le titre doit contenir au minimum deux caractères"
+		errorTitre.style.color = 'red'
+	}
+}) 
+
+/********************************Vérification que la catégorie à été sélectionner********************************************/
+
+//je récupère la valeur de mon select convertie en number
+const select = document.querySelector("#menuCategorie")
+let valueOption = Number(select.querySelector(':scope >*').value)
+select.addEventListener('change', (event)=>{
+	valueOption =Number(event.target.value)
+	const idCategorie =Number(event.target.value)
+	if (idCategorie === 0) {
+		acceptedForm.category = false
+		errorCategorie.style.color = 'red'
+		errorCategorie.innerHTML="Une catégorie est requise."//j'affiche un message d'erreur
+
+		isCheckForm()
+
+	} else {
+		acceptedForm.category = true
+		isCheckForm()
+	}
 })
 
-/*********************************Formulaire envoie image à l'api*********************/
+/***************************************************Formulaire envoie image à l'api******************************************/
 
 //Je récupère mon formulaire
 const form = document.querySelector('#form')
+
 //J'ajoute un listener a mon formulaire
 form.addEventListener('change', () => {
-	//Je récupère le bouton envoyé
-	const btnEnvoyer = document.querySelector(".bouton-valider")
-	//Je récupère mon input 
-	let input = document.getElementById('inputAjouterPhoto')
-	//je récupère le premier élément de mon tableau files
-	let image = input.files[0]
-	//je récupère la valeur de mon input (text)
-	let titre = document.getElementById("inputText").value.trim()
-	//je récupère la valeur de mon select convertie en number
-	let categorie = Number(document.querySelector("#menuCategorie").value)
+	console.log(myFile);
+	if(isCheckForm()===true){
+
 	//je crée un formData
 	let formData = new FormData()
-
-	//Je récupère les span pour la gestion des message erreur
-	let errorImage = document.getElementById("errorImage")//pour l'image
-	let errorTitre = document.getElementById("errorTitre")//pour le titre
-	let errorCategorie = document.getElementById("errorCategorie")//pour la catégorie
-	let msgUtilisateur = document.getElementById("msgUtilisateur")//pour l'envoie des éléments
-
-	//Je vide les message erreur
-	errorImage.innerHTML= ""
-	errorTitre.innerHTML= ""
-	errorCategorie.innerHTML= ""
-
-	//Je crée une fonction qui désactive le bouton valider
-	const desactiveBtn = ()=>{
-		btnEnvoyer.classList.remove('valide')
-		btnEnvoyer.setAttribute("disabled","true")
-	}
-
-	//Je crée une fonction qui active le bouton valider
-	const activeBtn = () =>{
-		btnEnvoyer.classList.add('valide')
-		btnEnvoyer.removeAttribute("disabled")
-	}
-
-	//Si l'image n'est pas défini 
-	if ( image === undefined) {
-		errorImage.innerHTML="Une image est requise."//j'affiche un message d'erreur
-		errorImage.style.color = 'red'
-		desactiveBtn()//je désactive mon bouton
-
-	
-	//Si le titre n'est pas défini 		
-	} else if (titre === "") {
-		errorTitre.innerHTML="Un titre est requis. svp"//j'affiche un message d'erreur
-		errorTitre.style.color = 'red'
-		desactiveBtn()//je désactive mon bouton
-
-	//Si le titre n'est pas défini 
-	} else if (categorie === 0 ) {
-		errorCategorie.innerHTML="Une catégorie est requise."//j'affiche un message d'erreur
-		errorCategorie.style.color = 'red'
-		desactiveBtn()//je désactive mon bouton
-
-	//Sinon Si tout les input sont remplis alors :
-	} else {
-		//J'active mon bouton 
-		activeBtn()
-
-		//je lui un listener pour qu'au click 
+		//je lui met un listener pour qu'au click 
 		btnEnvoyer.addEventListener('click', async () => {
-			
 			//j'envoie la valeur des inputs dans mon formData
-			formData.append('image',image)//image
-			formData.append('title',titre)//titre
-			formData.append('category',categorie)//catégorie
-
+			formData.append('image',myFile)//image
+			formData.append('title',titre.value)//titre
+			formData.append('category',valueOption)//catégorie				
+			console.log('envoie');
+	
 			//je fais un appel à l'api pour l'envoie des éléments
 			const response = await fetch("http://localhost:5678/api/works", {
 			method: "POST",
 			headers: {
-				"Authorization": `Bearer${admin}` // je recupère le token
+				"Authorization": `Bearer ${admin}` // je recupère le token
 			},
 			body: formData
 			})
-
+	
 			//Si la reponse est ok 
 			if (response.ok) {
 				let gallery = document.querySelector(".gallery")
@@ -425,12 +510,12 @@ form.addEventListener('change', () => {
 				msgUtilisateur.innerHTML = "L'envoie des éléments à reussi."
 				msgUtilisateur.style.color = "green"
 				form.reset()
-
+	
 			//Sinon l'envoie à échouer	
 			} else {
 				msgUtilisateur.innerHTML = "L'envoie à échouer"//J'affiche un message d'erreur
 				msgUtilisateur.style.color = "red"
-			}			
+			}		
 		})
 	}
 })

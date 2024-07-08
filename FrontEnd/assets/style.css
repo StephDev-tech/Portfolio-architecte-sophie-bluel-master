@@ -181,6 +181,11 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+.logo-instagram{
+	width: 22px;
+	height: 22px;
+}
+
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -275,6 +280,10 @@ li{
 
 .main-log-in{
 	height: 70%;
+}
+
+.bold{
+	font-weight: bold;
 }
 
 .titre-log-in{
@@ -374,6 +383,7 @@ li{
 	border: none;
 	color: black;
 	background-color: white;
+	font-size: large;
 }
 
 .titre-div-modal{
@@ -399,7 +409,7 @@ li{
 	align-items: center;
 	gap: 15px;
 	border-bottom: 2px solid grey;
-	overflow-y: scroll;
+	overflow: scroll;
 }
 
 .gallery-modal * {
@@ -465,6 +475,7 @@ li{
 	font-size: 10px;
 }
 /**************************************************Modal Ajout Photo*************************************/
+
 .bouton-retour-fermer{
 	width: 100%;
 	display: flex;
@@ -476,7 +487,12 @@ li{
 	border: none;
 	color: black;
 	background-color: white;
-	font-weight: bold;
+	font-weight: bolder;
+	font-size: 20px;
+}
+
+.fa-arrow-left{
+	font-size: larger;
 }
 
 .bouton-fermer-ap{
@@ -484,28 +500,31 @@ li{
 	border: none;
 	color: black;
 	background-color: white;
+	font-size: large;
 }
+
 
 .titre-ajout-photo{
 	margin-top: 0;
 	margin-bottom: 20px;
+	margin-top: 10px;
 }
 
 .form-ajouter-photo{
 	height: 70%;
 	width: 80%;
-	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	border-bottom: #B3B3B3 2px solid;
+	margin-top: 10px;
 }
 
 .zone-ajout-photo{
 	position: relative;
-	height: 300px;
+	height: 180px;
 	width: 100%;
-	padding: 5px;
+	padding: 10px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -514,11 +533,10 @@ li{
 	border-radius: 5px;
 	background-color: #E8F1F6;
 	margin-bottom: 30px;
-	
 }
 
 .fa-image{
-	font-size: 60px;
+	font-size: 75px;
 	color: #CBD6DC;
 }
 
@@ -540,7 +558,7 @@ li{
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 45px;
+	height: 35px;
 	width: 200px;
 	border: 1px solid #CBD6DC;
 	border-radius: 30px;
@@ -553,6 +571,9 @@ li{
 }
 .titre-ajouter-photo{
 	color: #306685;
+	font-family: "Work Sans";
+	font-size: 14px;
+	font-weight: bold;
 }
 
 .input-ajouter-photo{
@@ -565,12 +586,12 @@ li{
 	z-index: 2;
 }
 
-.test{
+.div-input-ap{
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	margin-bottom: 40px;
+	margin-bottom: 10px;
 }
 
 .placeholder{
@@ -582,7 +603,7 @@ li{
 
 .bouton-valider{
 	width: 50%;
-	height: 50px;
+	height: 45px;
 	margin-top: 30px;
 	padding: 0px 20px 0px 20px;
 	box-sizing: border-box;
@@ -601,4 +622,5 @@ li{
 
 .hide{
 	display: none;
+	background-color: #00000000;
 }

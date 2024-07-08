@@ -18,10 +18,10 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li><a href="index.html">projets</a></li>
-			<li>contact</li>
-			<li><a href="login.html">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			<li><a href="#portfolio">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li id="log"><a href="login.html">login</a></li>
+			<li><img src="./assets/icons/instagram.png" alt="Instagram" class="logo-instagram"></li>
 		</ul>
 	</nav>
 </header>
@@ -49,7 +49,7 @@
 	</section>
 	<aside id="modal" class="modal bkg-modal hide">
 		<div class="div-modal">
-			<button class="bouton-fermer-modal"><i class="fa-solid fa-x"></i></button>
+			<button class="bouton-fermer-modal"><i class="fa-solid fa-xmark"></i></button>
 			<h3 class="titre-div-modal">Galerie photo</h3>
 			<div class="gallery-modal">
 			</div>
@@ -59,26 +59,26 @@
 		<div id="modalAjouterPhoto" class="modal-Ajouter-photo div-modal hide">
 			<div class="bouton-retour-fermer">
 				<button class="bouton-retour-ap"><i class="fa-solid fa-arrow-left"></i></button>
-				<button class="bouton-fermer-ap"><i class="fa-solid fa-x"></i></button>
+				<button class="bouton-fermer-ap"><i class="fa-solid fa-xmark"></i></button>
 			</div>
 			<h3 class="titre-div-modal titre-ajout-photo">Ajout photo</h3>
 			<form id="form" class="form-ajouter-photo">
 				<div class="zone-ajout-photo">
-					<i class="fa-regular fa-image"></i>
-					<div class="ajouter-photo">
-						<label for="" class="titre-ajouter-photo">+ Ajouter photo</label>
+					<i class="fa-regular fa-image removable"></i>
+					<div class="ajouter-photo ">
+						<label for="" class="titre-ajouter-photo removable">+ Ajouter photo</label>
 						<input type="file" name="file" id="inputAjouterPhoto" accept="image/jpg, image/png" class="input-ajouter-photo">
 					</div>
 					<img src="" alt="" id="preview" class="preview">
-					<p class="texte-ajouter-photo">jpg, png : 4mo max</p>
+					<p class="texte-ajouter-photo removable">jpg, png : 4mo max</p>
 					<span id="errorImage"></span>				
 				</div>
-				<div class="test">
+				<div class="div-input-ap">
 					<label for="title" class="titre-input">Titre</label>
 					<input type="text" id="inputText" name="title" class="placeholder">
 					<span id="errorTitre"></span>
 				</div>
-				<div class="test">
+				<div class="div-input-ap">
 					<label for="categorie" class="titre-input">Catégorie</label>
 					<select name="categorie" id="menuCategorie" class="placeholder">
 						<option value="0"></option>
