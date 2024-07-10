@@ -66,25 +66,24 @@
 				<div class="zone-ajout-photo">
 					<i class="fa-regular fa-image removable"></i>
 					<div class="ajouter-photo ">
-						<label for="" class="titre-ajouter-photo removable">+ Ajouter photo</label>
-						<input type="file" name="file" id="inputAjouterPhoto" accept="image/jpg, image/png" class="input-ajouter-photo">
+						<label for="inputAjouterPhoto" class="titre-ajouter-photo removable">+ Ajouter photo</label>
+						<input type="file" id="inputAjouterPhoto" name="inputAjouterPhoto" accept="image/jpg, image/png" class="input-ajouter-photo">
 					</div>
 					<img src="" alt="" id="preview" class="preview">
 					<p class="texte-ajouter-photo removable">jpg, png : 4mo max</p>
 					<span id="errorImage"></span>				
 				</div>
 				<div class="div-input-ap">
-					<label for="title" class="titre-input">Titre</label>
-					<input type="text" id="inputText" name="title" class="placeholder">
+					<label for="inputText" class="titre-input">Titre</label>
+					<input type="text" id="inputText" name="inputText" class="placeholder">
 					<span id="errorTitre"></span>
 				</div>
 				<div class="div-input-ap">
-					<label for="categorie" class="titre-input">Catégorie</label>
-					<select name="categorie" id="menuCategorie" class="placeholder">
+					<label for="menuCategorie" class="titre-input">Catégorie</label>
+					<select id="menuCategorie" name="menuCategorie" class="placeholder">
 						<option value="0"></option>
 					</select>
 					<span id="errorCategorie"></span>
-
 				</div>
 			</form>
 			<button class="bouton-valider valider">Valider</button>
