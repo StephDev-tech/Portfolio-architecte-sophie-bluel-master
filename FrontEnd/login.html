@@ -2,39 +2,40 @@
 <html lang="fr">
 <head>
 	<meta charset="UTF-8">
-	<title>Sophie Bluel - Architecte d'intérieur</title>
+	<title>Sophie Bluel - Login</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="script.js" defer></script>
+	<script src="login.js" defer></script>
 </head>
 <body class="body-log-in">
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li><a href="index.html">projets</a></li>
-			<li>contact</li>
-			<li><a href="login.html">login</a></li>
+			<li><a href="./index.html#portfolio">projets</a></li>
+			<li><a href="./index.html#contact">contact</a></li>
+			<li class="bold"><a href="login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
 <main class="main-log-in">
 	<h2 class="titre-log-in">Log in</h2>
-    <form class="form-log-in" action="http://localhost:5678/api/users/login" method="post" id="monForm">
+    <form class="form-log-in" id="monForm">
         <div class="div-input">
             <label class="titre-input" for="email">E-mail</label>
             <input class="input" type="text" id="email" name="email">
         </div>
         <div class="div-input">
-            <label class="titre-input" for="mot de passe">Mot de passe</label>
-            <input class="input" type="password" id="motDePasse" name="mot de passe">
+            <label class="titre-input" for="motDePasse">Mot de passe</label>
+            <input class="input" type="password" id="motDePasse" name="motDePasse">
         </div>
-        <button class="btn-se-connecter" type="submit">Se connecter</button>
+		<p class="msg-erreur"></p>
+        <button class="btn-se-connecter" type="submit" onclick="envoieIdentifiantConnexion(event)">Se connecter</button>
     </form>
 	<a class="lien-mot-de-passe-oublie" href="">Mot de passe oublié</a>
 </main>

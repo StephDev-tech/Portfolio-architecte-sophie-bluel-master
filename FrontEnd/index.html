@@ -9,17 +9,19 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<script src="https://kit.fontawesome.com/634baaa39d.js" crossorigin="anonymous"></script>
 	<script src="script.js" defer></script>
 </head>
 <body>
+	<p class="admin js-mode-edition-admin hide"><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li><a href="index.html">projets</a></li>
-			<li>contact</li>
-			<li><a href="login.html">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			<li><a href="#portfolio">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li id="log"><a href="login.html">login</a></li>
+			<li><img src="./assets/icons/instagram.png" alt="Instagram" class="logo-instagram"></li>
 		</ul>
 	</nav>
 </header>
@@ -36,12 +38,58 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="js-div-admin">
+			<h2>Mes Projets</h2>
+			<a class="admin js-lien-div-admin hide" href="#modal"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
+		</div>
 		<ul class="listeFiltre">
 		</ul>
 		<div class="gallery">
 		</div>
 	</section>
+	<aside id="modal" class="modal bkg-modal hide">
+		<div class="div-modal">
+			<button class="bouton-fermer-modal"><i class="fa-solid fa-xmark"></i></button>
+			<h3 class="titre-div-modal">Galerie photo</h3>
+			<div class="gallery-modal">
+			</div>
+			<button id="btnAjouterPhoto" class="bouton-ajouter-photo">Ajouter une photo</button>
+		</div>
+
+		<div id="modalAjouterPhoto" class="modal-Ajouter-photo div-modal hide">
+			<div class="bouton-retour-fermer">
+				<button class="bouton-retour-ap"><i class="fa-solid fa-arrow-left"></i></button>
+				<button class="bouton-fermer-ap"><i class="fa-solid fa-xmark"></i></button>
+			</div>
+			<h3 class="titre-div-modal titre-ajout-photo">Ajout photo</h3>
+			<form id="form" class="form-ajouter-photo">
+				<div class="zone-ajout-photo">
+					<i class="fa-regular fa-image removable"></i>
+					<div class="ajouter-photo ">
+						<label for="inputAjouterPhoto" class="titre-ajouter-photo removable">+ Ajouter photo</label>
+						<input type="file" id="inputAjouterPhoto" name="inputAjouterPhoto" accept="image/jpg, image/png" class="input-ajouter-photo">
+					</div>
+					<img src="" alt="" id="preview" class="preview">
+					<p class="texte-ajouter-photo removable">jpg, png : 4mo max</p>
+					<span id="errorImage"></span>				
+				</div>
+				<div class="div-input-ap">
+					<label for="inputText" class="titre-input">Titre</label>
+					<input type="text" id="inputText" name="inputText" class="placeholder">
+					<span id="errorTitre"></span>
+				</div>
+				<div class="div-input-ap">
+					<label for="menuCategorie" class="titre-input">Catégorie</label>
+					<select id="menuCategorie" name="menuCategorie" class="placeholder">
+						<option value="0"></option>
+					</select>
+					<span id="errorCategorie"></span>
+				</div>
+			</form>
+			<button class="bouton-valider valider">Valider</button>
+			<span id="msgUtilisateur"></span>
+		</div>
+	</aside>
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -55,8 +103,7 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
-</main>
-
+</main>	
 <footer>
 	<nav>
 		<ul>

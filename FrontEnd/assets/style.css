@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	background-color: #FFFEF8;
+	overflow-x: hidden
 	;
 }
 ol, ul {
@@ -77,7 +78,6 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -135,7 +135,7 @@ li:hover {
 }
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	
 }
 .gallery {
 	width: 100%;
@@ -181,6 +181,11 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+.logo-instagram{
+	width: 22px;
+	height: 22px;
+}
+
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -213,7 +218,7 @@ li{
 	justify-content: center;
 }
 
-button{
+.bouton-filtre{
 	width: 100%;
 	height: 37px;
 	border: 1px solid #1D6154;
@@ -227,12 +232,44 @@ button{
 	background-color: white;
 }
 
-button:hover{
-	color: white;
+.active{
 	background-color: #1D6154;
+	color: white;
 }
 
-/***********************************************************CSS PAGE LOG IN*****************************************************/
+.js-div-admin{
+	height: fit-content;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	margin-bottom: 30px;
+}
+.js-lien-div-admin{
+	text-decoration: none;
+	color: black;
+	font-size: 14px;
+
+}
+.fa-pen-to-square{
+	margin-right: 10px;
+}
+
+.js-mode-edition-admin{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 30px;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+	color: white;
+}
+/***********************************************************CSS PAGE LOG IN**********************************************/
 .body-log-in{
 	height: 100vh;
 	background-color: #FFFEF8;
@@ -243,15 +280,19 @@ button:hover{
 
 .main-log-in{
 	height: 70%;
+}
 
+.bold{
+	font-weight: bold;
 }
 
 .titre-log-in{
 	margin-bottom: 45px;
+	display: flex;
+	justify-content: center;
 }
 
 .form-log-in{
-	height: 70%;
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -283,6 +324,8 @@ button:hover{
 	padding: 0;
 	width: 179px;
 	height: 36px;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
 	background-color: #1D6154;
 	margin-top: 15px;
 	color: white;
@@ -290,16 +333,299 @@ button:hover{
 }
 
 .lien-mot-de-passe-oublie{
+	display: flex;
+	justify-content: center;
 	margin-top: 30px;
 	color: black;
-	text-decoration: none;
-	border-bottom: 1px solid black;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 	font-size: 14px;
 	font-family: "Work Sans";
 }
 
 .lien-mot-de-passe-oublie:hover{
 	color: #B1663C;
-	border-bottom: 1px solid #B1663C;
 }
 
+.msg-erreur{
+	color: red;
+	font-style: italic;	
+}
+/*******************************************CSS version admin et modal*********************************************************************/
+.modal{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0,0,0,0.8);
+}
+
+.div-modal{
+	width: 630px;
+	height: 688px;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 30px;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.bouton-fermer-modal{
+	width: 90%;
+	display: flex;
+	justify-content: right;
+	border: none;
+	color: black;
+	background-color: white;
+	font-size: large;
+}
+
+.titre-div-modal{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 30px;
+	margin-top: 30px;
+	font-size: 26px;
+	font-weight: 400;
+	font-family: "Work Sans";
+}
+
+.gallery-modal{
+	height: 80%;
+	width: 90%;
+	padding: 20px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 15px;
+	border-bottom: 2px solid grey;
+	overflow: scroll;
+}
+
+.gallery-modal::-webkit-scrollbar{
+	display: none;
+}
+
+.gallery-modal * {
+	height: 103px;
+	width: 77px;
+}
+
+.gallery-modal * figcaption {
+	display: none;
+}
+
+.gallery-modal * img {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.bouton-ajouter-photo{
+	width: 50%;
+	height: 50px;
+	margin-top: 30px;
+	background-color: #1D6154;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	color: white;
+	padding: 0px 20px 0px 20px;
+	box-sizing: border-box;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: 'Syne';
+}
+
+.relative{
+	position: relative;
+}
+
+.bouton-supprimer{
+	width: 17px;
+	height: 17px;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: initial;
+	border-radius: 3px;
+	background-color: black;
+	color: white;
+	position: absolute;
+	top: 7px;
+	right: 7px;
+}
+
+.bouton-supprimer > .fa-trash-can{
+	display: initial;	
+	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	font-size: 10px;
+}
+/**************************************************Modal Ajout Photo*************************************/
+
+.bouton-retour-fermer{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.bouton-retour-ap{
+	width: fit-content;
+	border: none;
+	color: black;
+	background-color: white;
+	font-weight: bolder;
+	font-size: 20px;
+}
+
+.fa-arrow-left{
+	font-size: larger;
+}
+
+.bouton-fermer-ap{
+	width: fit-content;
+	border: none;
+	color: black;
+	background-color: white;
+	font-size: large;
+}
+
+
+.titre-ajout-photo{
+	margin-top: 0;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.form-ajouter-photo{
+	height: 70%;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-bottom: #B3B3B3 2px solid;
+	margin-top: 10px;
+}
+
+.zone-ajout-photo{
+	position: relative;
+	height: 180px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	border-radius: 5px;
+	background-color: #E8F1F6;
+	margin-bottom: 30px;
+}
+
+.fa-image{
+	font-size: 75px;
+	color: #CBD6DC;
+}
+
+.preview{
+	height: 100%;
+	position: absolute;
+	top:0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	display: flex;
+	align-self: center;
+	justify-self: center;
+	z-index: 1;
+	margin: auto;
+}
+
+.ajouter-photo{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 35px;
+	width: 200px;
+	border: 1px solid #CBD6DC;
+	border-radius: 30px;
+	background-color: #CBD6DC;
+}
+.bkg-image-input{
+	background-color: #E8F1F6;
+	border: initial;
+
+}
+.titre-ajouter-photo{
+	color: #306685;
+	font-family: "Work Sans";
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.input-ajouter-photo{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	z-index: 2;
+}
+
+.div-input-ap{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.placeholder{
+	height: 51px;
+	border: 1px solid white;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	color: #444444;
+}
+
+.bouton-valider{
+	width: 50%;
+	height: 45px;
+	margin-top: 30px;
+	padding: 0px 20px 0px 20px;
+	box-sizing: border-box;
+	border: none;
+	border-radius: 60px;
+	background-color: #A7A7A7;
+	color: white;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: 'Syne';
+}
+
+.valide{
+	background-color: #1D6154;	
+}
+
+.hide{
+	display: none;
+	background-color: #00000000;
+}
