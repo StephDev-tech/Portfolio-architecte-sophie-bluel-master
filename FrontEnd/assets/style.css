@@ -412,6 +412,10 @@ li{
 	overflow: scroll;
 }
 
+.gallery-modal::-webkit-scrollbar{
+	display: none;
+}
+
 .gallery-modal * {
 	height: 103px;
 	width: 77px;
