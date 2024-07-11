@@ -2,8 +2,8 @@ let toutLesProjets = [];
 let toutesLesCategorie = [];
 
 //Je fais une requête Globale pour récupérer les projets
-const demandeDonneesApi = async (dataType, typeDeDemande, corpdDeLaDemande) => {
-	const reponse = await fetch(`http://localhost:5678/api/${dataType}`, {
+const demandeDonneesApi = async (typeDeDonnee, typeDeDemande, corpdDeLaDemande) => {
+	const reponse = await fetch(`http://localhost:5678/api/${typeDeDonnee}`, {
 		method: typeDeDemande,
 		body: corpdDeLaDemande,
 	});
@@ -11,7 +11,7 @@ const demandeDonneesApi = async (dataType, typeDeDemande, corpdDeLaDemande) => {
 	return rep;
 };
 
-/*************************************Templates********************/
+/**********************************************************Templates*********************************************************/
 
 const creerLesProjetsEnHtml = (projet, classParent) => {
 	//Je crée un élément figure
@@ -30,6 +30,7 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 	figure.setAttribute("class", `suppression${projet.id}`);
 	//je récupère le conteneur parent
 	const gallerieImage = document.querySelector(classParent);
+	console.log(toutLesProjets);
 	// si c'est une modale
 	if (laModal) {
 		//J'ajouter une class à figure
@@ -50,9 +51,10 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 			//Je recupère la figure dans la galerie principale
 			const imageGallerie = document.querySelectorAll(`.${classASupprimer}`);
 			//Je supprime dynamiquement les images
-			imageGallerie.forEach ((image) => {
+			imageGallerie.forEach((image) => {
 				image.remove();
-			})
+			});
+			toutLesProjets = toutLesProjets.filter(item => item.id !== Number(idImage))
 			try {
 				//j'envoie ma requête à l'api pour supprimer en bdd
 				const response = await fetch(
@@ -67,11 +69,12 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 				);
 				if (response.ok) {
 					console.log(response, "la suppression à réussi");
+
 				} else {
 					throw new Error("la suppression à rencontrer une erreur");
 				}
 			} catch (error) {
-				console.log("error", error);
+				console.error("error", error);
 			}
 		});
 		//J'ajoute le bouton dans ma balise figure
@@ -81,7 +84,7 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 	gallerieImage.append(figure);
 };
 
-/*************************************Projets********************/
+/**********************************************************Projets***********************************************************/
 
 //Je crée une fonction pour générer les projets
 const genererTousLesProjets = (classParent) => {
@@ -176,17 +179,21 @@ if (admin != null) {
 	let log = document.getElementById("log");
 	//je le remplace par un lien logout
 	log.innerHTML = `<a href="index.html">logout</a>`;
-	log.addEventListener("click", (e) => {
-		e.preventDefault()
-		//je lui met un listener pour qu'au click
-		sessionStorage.removeItem("token"); //j'efface le token
-		elementAdmin.forEach((element) => {
-			// et pour chaque element
-			element.classList.add("hide"); //j'ajoute la class 'hide'
-		});
-		genererFiltres();
-		log.innerHTML = `<a href="./login.html">login</a>`;
-	}, {once: true});
+	log.addEventListener(
+		"click",
+		(e) => {
+			e.preventDefault();
+			//je lui met un listener pour qu'au click
+			sessionStorage.removeItem("token"); //j'efface le token
+			elementAdmin.forEach((element) => {
+				// et pour chaque element
+				element.classList.add("hide"); //j'ajoute la class 'hide'
+			});
+			genererFiltres();
+			log.innerHTML = `<a href="./login.html">login</a>`;
+		},
+		{ once: true }
+	);
 } else {
 	genererFiltres();
 }
@@ -194,7 +201,7 @@ if (admin != null) {
 /*****************************************************************MODAL*****************************************************/
 
 // Je fais une fonction pour ouvrir la modal
-const openModal = () => {
+const ouvrirModal = () => {
 	const modal = document.getElementById("modal"); //je récupère la modal
 	toutLesProjets.forEach((projet) => {
 		//je récupère les projets dans le tableau toutLesProjets et pour chaque projets
@@ -204,7 +211,7 @@ const openModal = () => {
 };
 
 //Je fais une fonction pour fermer la modal
-const closeModal = () => {
+const fermerModal = () => {
 	const modal = document.getElementById("modal"); //je recupere la modal
 	modal.classList.add("hide"); //j'ajoute une class "hide"
 	const formAReboot = document.querySelector(".form-ajouter-photo"); //Je récupère mon formulaire
@@ -225,10 +232,10 @@ const closeModal = () => {
 		title: false,
 		category: false,
 	};
-	errorImage.innerHTML = ""
-	errorTitre.innerHTML = ""
-	errorCategorie.innerHTML = ""
-	msgUtilisateur.innerHTML = ""
+	errorImage.innerHTML = "";
+	errorTitre.innerHTML = "";
+	errorCategorie.innerHTML = "";
+	msgUtilisateur.innerHTML = "";
 };
 
 //je recupère la modal à vider
@@ -238,14 +245,14 @@ const galleryModal = document.querySelector(".gallery-modal");
 const boutonModifier = document.querySelector(".js-lien-div-admin");
 // Je lui met un listener pour qu'au click il ouvre la modal
 boutonModifier.addEventListener("click", () => {
-	openModal();
+	ouvrirModal();
 });
 
 //Je recupère mon bouton fermer
 const boutonfermer = document.querySelector(".bouton-fermer-modal");
 //Je met un listener pour qu'au click il ferme la modal
 boutonfermer.addEventListener("click", () => {
-	closeModal();
+	fermerModal();
 	galleryModal.innerHTML = "";
 });
 
@@ -256,7 +263,7 @@ const modalBackground = document.querySelector("#modal");
 modalBackground.addEventListener("click", (e) => {
 	// Si on click sur l'arrière plan la modal se ferme
 	if (e.target === modalBackground) {
-		closeModal();
+		fermerModal();
 		galleryModal.innerHTML = "";
 		modalAjoutPhoto.classList.add("hide");
 		modalGalleryPhoto.classList.remove("hide");
@@ -290,7 +297,7 @@ boutonfermerAp.addEventListener("click", () => {
 	//il cache la modal ajouter photo
 	modalAjoutPhoto.classList.add("hide");
 	//il ferme la modal
-	closeModal();
+	fermerModal();
 	//il retire la class hide dans la modal galerie image
 	modalGalleryPhoto.classList.remove("hide");
 	// il la vide
@@ -355,7 +362,7 @@ let formAccepter = {
 //Je crée une fonction pour vérifier si j'ai bien les données attendue
 const verifDuForm = () => {
 	const verif =
-	formAccepter.image && formAccepter.title && formAccepter.category;
+		formAccepter.image && formAccepter.title && formAccepter.category;
 	if (verif) {
 		activeBtn();
 	} else {
@@ -484,7 +491,7 @@ select.addEventListener("change", (event) => {
 	} else {
 		formAccepter.category = true;
 		verifDuForm();
-		errorCategorie.innerHTML = ""
+		errorCategorie.innerHTML = "";
 	}
 });
 
@@ -515,11 +522,11 @@ form.addEventListener("change", () => {
 			//Si la reponse est ok
 			if (response.ok) {
 				let gallery = document.querySelector(".gallery");
-				let galleryModal = document.querySelector(".gallery-modal")
+				let galleryModal = document.querySelector(".gallery-modal");
 				gallery.innerHTML = "";
 				genererTousLesProjets(".gallery");
-				galleryModal.innerHTML = ""
-				genererTousLesProjets(".gallery-modal")
+				galleryModal.innerHTML = "";
+				genererTousLesProjets(".gallery-modal");
 				msgUtilisateur.innerHTML = "L'envoie des éléments à reussi.";
 				msgUtilisateur.style.color = "green";
 				form.reset();
