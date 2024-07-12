@@ -30,19 +30,19 @@ const envoieIdentifiantConnexion = async (event) => {
             if (response.status === 200) {
                 //Je récupère la réponse sous format JSON
                 const rep = await response.json();
-                //Je range dans le localstorage le token (j'entre le nom de ma valeur puis sa valeur)
+                //Je range dans le sessionStorage le token (j'entre le nom de ma valeur puis sa valeur)
                 sessionStorage.setItem("token", rep.token)  
                 //Je redirige le client sur la page d'accueil
                 window.location.href = "./index.html"
                 //Je gère le status reponse de type 401 et 404
             } else if (response.status === 401 ||response.status === 404)  {
                 //J'envoie un message erreur au clients 
-                erreurSaisi("identifiant et/ou mot de passe incorrect")               
+                throw new Error('identifiant et/ou mot de passe incorrect.');
             }
         //Je gère l'exception avec le catch pour ne pas planter le backend  
         } catch (error) {
-            console.error('Le server à rencontrer un problème.');
-            erreurSaisi('Le server à rencontrer un problème.');
+            console.error('error', error)
+            erreurSaisi("identifiant et/ou mot de passe incorrect")               
         }
     //Si l'utilisateur ne rempli pas les champs
     } else {
@@ -50,6 +50,5 @@ const envoieIdentifiantConnexion = async (event) => {
         console.error("Les champs email et mot de passe sont requis.");
         //Je récupère mon form 
         erreurSaisi("Les champs email et mot de passe sont requis.");
-
     }    
 }

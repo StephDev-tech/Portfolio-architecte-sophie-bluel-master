@@ -2,7 +2,7 @@ let toutLesProjets = [];
 let toutesLesCategorie = [];
 
 //Je fais une requête Globale pour récupérer les projets
-const demandeDonneesApi = async (typeDeDonnee, typeDeDemande, corpdDeLaDemande) => {
+const demandeDonneesApi = async (typeDeDonnee,typeDeDemande,corpdDeLaDemande) => {
 	const reponse = await fetch(`http://localhost:5678/api/${typeDeDonnee}`, {
 		method: typeDeDemande,
 		body: corpdDeLaDemande,
@@ -30,7 +30,6 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 	figure.setAttribute("class", `suppression${projet.id}`);
 	//je récupère le conteneur parent
 	const gallerieImage = document.querySelector(classParent);
-	console.log(toutLesProjets);
 	// si c'est une modale
 	if (laModal) {
 		//J'ajouter une class à figure
@@ -54,7 +53,9 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 			imageGallerie.forEach((image) => {
 				image.remove();
 			});
-			toutLesProjets = toutLesProjets.filter(item => item.id !== Number(idImage))
+			toutLesProjets = toutLesProjets.filter(
+				(item) => item.id !== Number(idImage)
+			);
 			try {
 				//j'envoie ma requête à l'api pour supprimer en bdd
 				const response = await fetch(
@@ -69,7 +70,6 @@ const creerLesProjetsEnHtml = (projet, classParent) => {
 				);
 				if (response.ok) {
 					console.log(response, "la suppression à réussi");
-
 				} else {
 					throw new Error("la suppression à rencontrer une erreur");
 				}
@@ -497,56 +497,51 @@ select.addEventListener("change", (event) => {
 
 /***************************************************Formulaire envoie image à l'api******************************************/
 
-//J'ajoute un listener a mon formulaire
-form.addEventListener("change", () => {
-	if (verifDuForm()) {
-		//je crée un formData
-		let formData = new FormData();
-		//je lui met un listener pour qu'au click
-		btnEnvoyer.addEventListener("click", async () => {
-			//j'envoie la valeur des inputs dans mon formData
-			formData.append("image", monFichier); //image
-			formData.append("title", titre.value); //titre
-			formData.append("category", valueOption); //catégorie
-			console.log("envoie");
+//je crée un formData
+let formData = new FormData();
+//je lui met un listener pour qu'au click
+btnEnvoyer.addEventListener("click", async () => {
+	//j'envoie la valeur des inputs dans mon formData
+	formData.append("image", monFichier); //image
+	formData.append("title", titre.value); //titre
+	formData.append("category", valueOption); //catégorie
 
-			//je fais un appel à l'api pour l'envoie des éléments
-			const response = await fetch("http://localhost:5678/api/works", {
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${admin}`, // je recupère le token
-				},
-				body: formData,
-			});
+	//je fais un appel à l'api pour l'envoie des éléments
+	const response = await fetch("http://localhost:5678/api/works", {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${admin}`, // je recupère le token
+		},
+		body: formData,
+	});
 
-			//Si la reponse est ok
-			if (response.ok) {
-				let gallery = document.querySelector(".gallery");
-				let galleryModal = document.querySelector(".gallery-modal");
-				gallery.innerHTML = "";
-				genererTousLesProjets(".gallery");
-				galleryModal.innerHTML = "";
-				genererTousLesProjets(".gallery-modal");
-				msgUtilisateur.innerHTML = "L'envoie des éléments à reussi.";
-				msgUtilisateur.style.color = "green";
-				form.reset();
-				apercuImage();
-				ajouterLesElements();
-				desactiveBtn();
-				//Je reset mes éléments à faux par le biais d'un objet
-				formAccepter = {
-					image: false,
-					title: false,
-					category: false,
-				};
-				setTimeout(() => {
-					msgUtilisateur.innerHTML = "";
-				}, 2000);
-				//Sinon l'envoie à échouer
-			} else {
-				msgUtilisateur.innerHTML = "L'envoie à échouer"; //J'affiche un message d'erreur
-				msgUtilisateur.style.color = "red";
-			}
-		});
+	//Si la reponse est ok
+	if (response.ok) {
+		let gallery = document.querySelector(".gallery");
+		let galleryModal = document.querySelector(".gallery-modal");
+		gallery.innerHTML = "";
+		genererTousLesProjets(".gallery");
+		galleryModal.innerHTML = "";
+		genererTousLesProjets(".gallery-modal");
+		msgUtilisateur.innerHTML = "L'envoie des éléments à reussi.";
+		msgUtilisateur.style.color = "green";
+		form.reset();
+		apercuImage();
+		ajouterLesElements();
+		desactiveBtn();
+		//Je reset mes éléments à faux par le biais d'un objet
+		formAccepter = {
+			image: false,
+			title: false,
+			category: false,
+		};
+		setTimeout(() => {
+			msgUtilisateur.innerHTML = "";
+		}, 2000);
+		//Sinon l'envoie à échouer
+	} else {
+		msgUtilisateur.innerHTML = "L'envoie à échouer"; //J'affiche un message d'erreur
+		msgUtilisateur.style.color = "red";
 	}
 });
+
