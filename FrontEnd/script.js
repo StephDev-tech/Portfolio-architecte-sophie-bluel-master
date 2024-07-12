@@ -469,7 +469,6 @@ titre.addEventListener("change", (event) => {
 	if (regEx.test(titre.value)) {
 		formAccepter.title = true;
 		verifDuForm();
-		console.log("ok");
 		errorTitre.innerHTML = "";
 	} else {
 		formAccepter.title = false;
