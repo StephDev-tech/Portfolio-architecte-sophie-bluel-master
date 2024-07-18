@@ -382,7 +382,7 @@ let errorCategorie = document.getElementById("errorCategorie"); //pour la catég
 let msgUtilisateur = document.getElementById("msgUtilisateur"); //pour l'envoie des éléments
 
 /*********************************Aperçu image et verification du format et taille de l'image*******************************/
-
+let srcImage = ""
 //je fais une fonction pour l'apercu de l'image avant envoie
 const apercuImage = () => {
 	//Je récupère mon input (file)
@@ -396,7 +396,8 @@ const apercuImage = () => {
 		//Au chargement de l'image j'exécute une fonction qui affiche l'image dans la balise
 		reader.onload = (input) => {
 			//Je lis l'image télécharger
-			image.src = input.target.result; //je récupère l'url et je le met dans l'attribut src de la balise image
+			srcImage =  input.target.result
+			image.src = srcImage; //je récupère l'url et je le met dans l'attribut src de la balise image
 		};
 		reader.readAsDataURL(input.files[0]); //
 		image.classList.remove("hide"); //je retire la class 'hide'
@@ -501,11 +502,13 @@ select.addEventListener("change", (event) => {
 /***************************************************Formulaire envoie image à l'api******************************************/
 //J'ajoute un listener a mon formulaire
 form.addEventListener("change", () => {
+
 	if (verifDuForm()) {
 		//je crée un formData
 		let formData = new FormData();
 		//je lui met un listener pour qu'au click
-		btnEnvoyer.addEventListener("click", async () => {
+		btnEnvoyer.addEventListener("click", async (e) => {
+			e.preventDefault();
 			//j'envoie la valeur des inputs dans mon formData
 			formData.append("image", monFichier); //image
 			formData.append("title", titre.value); //titre
@@ -519,17 +522,19 @@ form.addEventListener("change", () => {
 				},
 				body: formData,
 			});
-
 			//Si la reponse est ok
 			if (response.ok) {
 				let gallery = document.querySelector(".gallery");
 				let galleryModal = document.querySelector(".gallery-modal");
-				gallery.innerHTML = "";
-				genererTousLesProjets(".gallery");
+				const figure = document.createElement("figure")
+				figure.innerHTML =  `<img src="${srcImage}" alt="${titre.value}"><figcaption>${titre.value}</figcaption>`;
+				gallery.appendChild(figure)
 				galleryModal.innerHTML = "";
 				genererTousLesProjets(".gallery-modal");
 				msgUtilisateur.innerHTML = "L'envoie des éléments à reussi.";
 				msgUtilisateur.style.color = "green";
+				const image = document.getElementById("preview");
+				image.removeAttribute("src")
 				form.reset();
 				apercuImage();
 				ajouterLesElements();
@@ -548,6 +553,6 @@ form.addEventListener("change", () => {
 				msgUtilisateur.innerHTML = "L'envoie à échouer"; //J'affiche un message d'erreur
 				msgUtilisateur.style.color = "red";
 			}
-		});
+		}, {once: true});
 	}
 });
